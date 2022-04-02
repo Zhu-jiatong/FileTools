@@ -5,7 +5,7 @@
 using namespace std;
 
 int key;
-string rawPath, rawKey, path, secPath;
+string rawPath, rawKey;
 
 void fCipher(string file, int code);
 
