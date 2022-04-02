@@ -35,9 +35,9 @@ void fCipher(string file, int code) {
 		while (fin.get(rawTemp))
 		{
 			intTemp = rawTemp;
-			cout << intTemp << endl;
+			//cout << intTemp << endl;
 			intTemp += code;
-			cout << (char)intTemp;
+			//cout << (char)intTemp;
 			fout.put((char)intTemp);
 		}
 		fout.close();
@@ -52,9 +52,9 @@ void fCipher(string file, int code) {
 		while (fin.get(rawTemp))
 		{
 			intTemp = rawTemp;
-			cout << intTemp << endl;
+			//cout << intTemp << endl;
 			intTemp -= code;
-			cout << (char)intTemp;
+			//cout << (char)intTemp;
 			fout.put((char)intTemp);
 		}
 		fout.close();
