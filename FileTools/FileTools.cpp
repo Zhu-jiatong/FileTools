@@ -44,7 +44,7 @@ void fCipher(string file, int code) {
 	if (file.substr(file.find_last_of("\\") + 1, file.length()).find("encrypted_") != file.npos)
 	{
 		string outPath = file.substr(0, file.find_last_of("\\") + 1) + file.substr(file.find_last_of("\\") + 1, file.length()).replace(file.substr(file.find_last_of("\\") + 1, file.length()).find("encrypted_"), 10, "");
-		cout << outPath << endl;
+		cout << "OUTPUT FILE PATH" << outPath << endl;
 		ofstream fout(outPath, ios::binary);
 		ready = true;
 		while (fin.get(rawTemp))
@@ -62,7 +62,7 @@ void fCipher(string file, int code) {
 	else
 	{
 		string outPath = file.substr(0, file.find_last_of("\\") + 1) + "encrypted_" + file.substr(file.find_last_of("\\") + 1, file.length());
-		cout << outPath << endl;
+		cout << "OUTPUT FILE PATH" << outPath << endl;
 		ofstream fout(outPath, ios::binary);
 		ready = true;
 		while (fin.get(rawTemp))
