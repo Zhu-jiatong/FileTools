@@ -13,6 +13,8 @@ string rawPath, rawKey;
 bool done(false);
 atomic<long float> progress(0);
 atomic<bool> ready(false);
+atomic<chrono::steady_clock::time_point> startT;
+chrono::steady_clock::time_point nowT;
 //long float progress(0);
 
 void fCipher(string file, int code);
@@ -25,7 +27,7 @@ int main(int argc, char* argv[])
 
 	cout << "KEY: ", cin >> rawKey;
 	key = stoi(rawKey);
-	//cout << "KEY: " << key << endl;
+	cout << "KEY: " << key << endl;
 	thread t1(fCipher, rawPath, key);
 	showBar();
 	t1.join();
@@ -46,6 +48,7 @@ void fCipher(string file, int code) {
 		string outPath = file.substr(0, file.find_last_of("\\") + 1) + file.substr(file.find_last_of("\\") + 1, file.length()).replace(file.substr(file.find_last_of("\\") + 1, file.length()).find("encrypted_"), 10, "");
 		cout << "OUTPUT FILE PATH: " << outPath << endl;
 		ofstream fout(outPath, ios::binary);
+		startT = chrono::steady_clock::now();
 		ready = true;
 		while (fin.get(rawTemp))
 		{
@@ -64,6 +67,7 @@ void fCipher(string file, int code) {
 		string outPath = file.substr(0, file.find_last_of("\\") + 1) + "encrypted_" + file.substr(file.find_last_of("\\") + 1, file.length());
 		cout << "OUTPUT FILE PATH: " << outPath << endl;
 		ofstream fout(outPath, ios::binary);
+		startT = chrono::steady_clock::now();
 		ready = true;
 		while (fin.get(rawTemp))
 		{
@@ -89,6 +93,20 @@ void showBar() {
 	while (!done)
 	{
 		encrypt.update(progress);
+		cout << endl;
+		nowT = chrono::steady_clock::now();
+		chrono::steady_clock::time_point beginT = startT;
+		chrono::steady_clock::duration timeSpan = nowT - beginT;
+		//long timeVal = timeSpan.count()* chrono::milliseconds::period::num / chrono::milliseconds::period::den;
+		auto timeVal = chrono::duration_cast<chrono::seconds>(nowT - beginT).count();
+		auto rate = progress / timeVal;
+		auto tLeft = (encrypt.max - progress) / rate;
+		auto hLeft = tLeft / 3600;
+		auto mLeft = ((long)tLeft % 3600) / 60;
+		auto sLeft = ((long)tLeft % 3600) % 60;
+		cout << "TIME LEFT: " << hLeft << "hrs " << mLeft << "mins " << sLeft << "secs" << " | SPEED: " << setprecision(1) << fixed << rate / 1000 << "KBps" << setw(1);
+		COORD cPos{ 0, 4 };
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), cPos);
 		this_thread::sleep_for(chrono::milliseconds(125));
 	}
 }
