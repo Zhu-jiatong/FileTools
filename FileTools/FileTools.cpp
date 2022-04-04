@@ -101,7 +101,7 @@ void showBar() {
 		auto timeVal = chrono::duration_cast<chrono::seconds>(nowT - beginT).count();
 		auto rate = progress / timeVal;
 		auto tLeft = (encrypt.max - progress) / rate;
-		auto hLeft = tLeft / 3600;
+		int hLeft = tLeft / 3600;
 		auto mLeft = ((long)tLeft % 3600) / 60;
 		auto sLeft = ((long)tLeft % 3600) % 60;
 		cout << "TIME LEFT: " << hLeft << "hrs " << mLeft << "mins " << sLeft << "secs" << " | SPEED: " << setprecision(1) << fixed << rate / 1000 << "KBps" << setw(1);
